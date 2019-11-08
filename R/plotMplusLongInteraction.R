@@ -57,6 +57,7 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
                                      timespan = 0:5,
                                      timeunits = "years",
                                      std = c("US", "STDY", "STDYX")){
+  require(dplyr)
   require(ggplot2)
   require(cowplot)
   require(MplusAutomation)
