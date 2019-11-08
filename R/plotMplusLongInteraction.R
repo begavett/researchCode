@@ -1,3 +1,5 @@
+# source("https://raw.githubusercontent.com/begavett/researchCode/master/R/plotMplusLongInteraction.R")
+
 # Usage: To plot 3-way interactions derived from Mplus latent growth curve model results (linear only)
 # This function reads in the Mplus .out file, so the working directory should be set accordingly.
 # Factor 1 levels are shown as separate lines with user-specified levels
