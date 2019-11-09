@@ -83,6 +83,9 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
   dat$Slope <- with(dat, Int_Slp + b1_S*Var1 + b2_S*Var2 + b3_S*Var1xVar2)
   dat$MPredScore <- with(dat, Intercept + Slope*Time)
   
+  if(length(f1labels) != length(f1levels)) f1labels <- factor(as.character(f1levels))
+  if(length(f2labels) != length(f2levels)) f2labels <- factor(as.character(f2levels))
+  
   dat$Var1F <- factor(dat$Var1, levels = f1levels, labels = f1labels)
   dat$Var2F <- factor(dat$Var2, levels = f2levels, labels = f2labels)
   
