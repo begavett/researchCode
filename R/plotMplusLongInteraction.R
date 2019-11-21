@@ -22,10 +22,11 @@
 # timespan (numeric vector length > 1): Numeric representation of time units to be plotted on x-axis
 # timeunits (string length 1): Character representation of units of time (used to label x-axis)
 # std (string length 1): Which type of parameter estimates should be plotted? Defaults to unstandardized.
+# linewidth (numeric vector length 1): size of lines drawn
 
 # Example (not run):
 
-# plotMplusLongInteraction(outfile = "decomposition and lgm categorical moderator NEW wTECH3.out", 
+# plotMplusLongInteraction(outfile = "decomposition and lgm categorical moderator NEW wTECH3.out",
 #                          dvlabel = "ADNI-EF Score (M=0, SD=1)",
 #                          factor1 = "MEMR",
 #                          f1label = "Cognitive Reserve",
@@ -39,7 +40,8 @@
 #                          slpvar = "S",
 #                          timespan = 0:5,
 #                          timeunits = "years",
-#                          std = c("US"))
+#                          std = c("US"),
+#                          linewidth = 1)
                          
 
 plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorical moderator NEW wTECH3.out", 
@@ -56,7 +58,8 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
                                      slpvar = "S",
                                      timespan = 0:5,
                                      timeunits = "years",
-                                     std = c("US", "STDY", "STDYX")){
+                                     std = c("US", "STDY", "STDYX"),
+                                     linewidth = 1){
   require(dplyr)
   require(ggplot2)
   require(cowplot)
@@ -89,7 +92,7 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
   dat$Var1F <- factor(dat$Var1, levels = f1levels, labels = f1labels)
   dat$Var2F <- factor(dat$Var2, levels = f2levels, labels = f2labels)
   
-  p <- ggplot(dat, aes(x = Time, y = MPredScore, colour = Var1F, lty = Var1F)) + geom_line() +
+  p <- ggplot(dat, aes(x = Time, y = MPredScore, colour = Var1F, lty = Var1F)) + geom_line(linewidth = 2) +
     facet_wrap(~Var2F) + ylab(dvlabel) + xlab(paste0("Time (", timeunits,")")) +
     scale_colour_discrete(name = f1label) + 
     scale_linetype_discrete(name = f1label) +
