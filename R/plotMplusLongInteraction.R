@@ -74,17 +74,17 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
   dat$Var1xVar2 <- dat$Var1*dat$Var2
   dat <- dplyr::bind_rows(replicate(length(timespan), expr = {list(dat)}))
   dat$Time <- rep(timespan, each = nrow(dat)/length(timespan))
+  dat$b0_I <- as.numeric(subset(PEs, paramHeader == "Intercepts" & param == icptvar, select = est))
   dat$b1_I <- as.numeric(subset(PEs, paramHeader == paste0(icptvar, ".ON") & param == factor1, select = est))
   dat$b2_I <- as.numeric(subset(PEs, paramHeader == paste0(icptvar, ".ON") & param == factor2, select = est))
   dat$b3_I <- as.numeric(subset(PEs, paramHeader == paste0(icptvar, ".ON") & param == intXvar, select = est))
+  dat$b0_S <- as.numeric(subset(PEs, paramHeader == "Intercepts" & param == slpvar, select = est))
   dat$b1_S <- as.numeric(subset(PEs, paramHeader == paste0(slpvar, ".ON") & param == factor1, select = est))
   dat$b2_S <- as.numeric(subset(PEs, paramHeader == paste0(slpvar, ".ON") & param == factor2, select = est))
   dat$b3_S <- as.numeric(subset(PEs, paramHeader == paste0(slpvar, ".ON") & param == intXvar, select = est))
-  dat$Int_Int <- as.numeric(subset(PEs, paramHeader == "Intercepts" & param == icptvar, select = est))
-  dat$Int_Slp <- as.numeric(subset(PEs, paramHeader == "Intercepts" & param == slpvar, select = est))
-  dat$Intercept <- with(dat, Int_Int + b1_I*Var1 + b2_I*Var2 + b3_I*Var1xVar2)
-  dat$Slope <- with(dat, Int_Slp + b1_S*Var1 + b2_S*Var2 + b3_S*Var1xVar2)
-  dat$MPredScore <- with(dat, Intercept + Slope*Time)
+  dat$Intercept <- with(dat, b0_I + b1_I*Var1 + b2_I*Var2 + b3_I*Var1xVar2)
+  dat$Slope <- with(dat, b0_S + b1_S*Var1 + b2_S*Var2 + b3_S*Var1xVar2)
+  dat$Yhat <- with(dat, Intercept + Slope*Time)
   
   if(length(f1labels) != length(f1levels)) f1labels <- factor(as.character(f1levels))
   if(length(f2labels) != length(f2levels)) f2labels <- factor(as.character(f2levels))
@@ -92,7 +92,7 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
   dat$Var1F <- factor(dat$Var1, levels = f1levels, labels = f1labels)
   dat$Var2F <- factor(dat$Var2, levels = f2levels, labels = f2labels)
   
-  p <- ggplot(dat, aes(x = Time, y = MPredScore, colour = Var1F, lty = Var1F)) + geom_line(linewidth = 2) +
+  p <- ggplot(dat, aes(x = Time, y = Yhat, colour = Var1F, lty = Var1F)) + geom_line(size = linewidth) +
     facet_wrap(~Var2F) + ylab(dvlabel) + xlab(paste0("Time (", timeunits,")")) +
     scale_colour_discrete(name = f1label) + 
     scale_linetype_discrete(name = f1label) +
