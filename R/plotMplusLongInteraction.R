@@ -40,7 +40,7 @@
 #                          slpvar = "S",
 #                          timespan = 0:5,
 #                          timeunits = "years",
-#                          std = c("US"),
+#                          std = "US",
 #                          linewidth = 1)
                          
 
@@ -66,7 +66,7 @@ plotMplusLongInteraction <- function(outfile = "decomposition and lgm categorica
   require(MplusAutomation)
   
   results <- MplusAutomation::readModels(target = outfile)
-  if(length(std > 1)) std <- "US"
+  if(length(std) > 1) std <- "US"
   if(std == "US") PEs <- results$parameters$unstandardized
   if(std == "STDY") PEs <- results$parameters$stdy.standardized
   if(std == "STDYX") PEs <- results$parameters$stdyx.standardized
